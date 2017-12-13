@@ -2,18 +2,23 @@ package com.example.extension.timing;
 
 import java.lang.reflect.Method;
 
-import org.junit.jupiter.api.extension.*;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TimingExtension implements AfterAllCallback, AfterEachCallback, AfterTestExecutionCallback, BeforeAllCallback,
 		BeforeEachCallback, BeforeTestExecutionCallback {
 
 	@Override
-	public void afterTestExecution(TestExtensionContext context) throws Exception {
+	public void afterTestExecution(ExtensionContext context) throws Exception {
 		Method testMethod = context.getTestMethod().get();
 		long start = getStore(context).remove(testMethod, long.class);
 		long duration = System.currentTimeMillis() - start;
@@ -22,32 +27,32 @@ public class TimingExtension implements AfterAllCallback, AfterEachCallback, Aft
 	}
 
 	@Override
-	public void beforeTestExecution(TestExtensionContext context) throws Exception {
+	public void beforeTestExecution(ExtensionContext context) throws Exception {
 		getStore(context).put(context.getTestMethod().get(), System.currentTimeMillis());
 		log.info("Before test execution");
 	}
 
-	private Store getStore(TestExtensionContext context) {
+	private Store getStore(ExtensionContext context) {
 		return context.getStore(Namespace.create(getClass(), context));
 	}
 
 	@Override
-	public void afterAll(ContainerExtensionContext containerExtensionContext) throws Exception {
+	public void afterAll(ExtensionContext containerExtensionContext) throws Exception {
 		log.info("After all execution");
 	}
 
 	@Override
-	public void beforeAll(ContainerExtensionContext containerExtensionContext) throws Exception {
+	public void beforeAll(ExtensionContext containerExtensionContext) throws Exception {
 		log.info("Before all execution");
 	}
 
 	@Override
-	public void afterEach(TestExtensionContext testExtensionContext) throws Exception {
+	public void afterEach(ExtensionContext testExtensionContext) throws Exception {
 		log.info("After each execution");
 	}
 
 	@Override
-	public void beforeEach(TestExtensionContext testExtensionContext) throws Exception {
+	public void beforeEach(ExtensionContext testExtensionContext) throws Exception {
 		log.info("Before each execution");
 	}
 

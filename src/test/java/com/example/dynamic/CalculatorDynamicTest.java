@@ -1,19 +1,18 @@
 package com.example.dynamic;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.jupiter.api.DynamicTest.dynamicTest;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.example.Calculator;
+import com.example.resolvers.TestAnnotationParameterResolver;
+import com.example.resolvers.annotations.TestAnnotationParameter;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import com.example.Calculator;
-import com.example.resolvers.TestAnnotationParameterResolver;
-import com.example.resolvers.annotations.TestAnnotationParameter;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(TestAnnotationParameterResolver.class)
 class CalculatorDynamicTest {
@@ -30,7 +29,8 @@ class CalculatorDynamicTest {
 		);
 
 		return calculationDataSet.stream().map(data ->
-				dynamicTest(data.first + " + " + data.second + " = " + data.expectedResult, () -> {
+				dynamicTest(data.first + " + " + data.second + " = " + data.expectedResult,
+						() -> {
 					int result = calculator.add(data.first, data.second);
 					assertThat(result).isEqualTo(data.expectedResult);
 				})

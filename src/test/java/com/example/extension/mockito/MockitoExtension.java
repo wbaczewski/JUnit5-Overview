@@ -8,18 +8,20 @@
 
 package com.example.extension.mockito;
 
-import static org.mockito.Mockito.mock;
-
 import java.lang.reflect.Parameter;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.mock;
+
 /**
  * {@code MockitoExtension} showcases the {@link TestInstancePostProcessor}
  * and {@link ParameterResolver} extension APIs of JUnit 5 by providing
@@ -33,16 +35,6 @@ public class MockitoExtension implements TestInstancePostProcessor, ParameterRes
 	@Override
 	public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
 		MockitoAnnotations.initMocks(testInstance);
-	}
-
-	@Override
-	public boolean supports(ParameterContext parameterContext, ExtensionContext extensionContext) {
-		return parameterContext.getParameter().isAnnotationPresent(Mock.class);
-	}
-
-	@Override
-	public Object resolve(ParameterContext parameterContext, ExtensionContext extensionContext) {
-		return getMock(parameterContext.getParameter(), extensionContext);
 	}
 
 	private Object getMock(Parameter parameter, ExtensionContext extensionContext) {
@@ -67,4 +59,15 @@ public class MockitoExtension implements TestInstancePostProcessor, ParameterRes
 		return null;
 	}
 
+	@Override
+	public boolean supportsParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext)
+			throws ParameterResolutionException {
+		return parameterContext.getParameter().isAnnotationPresent(Mock.class);
+	}
+
+	@Override
+	public Object resolveParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext)
+			throws ParameterResolutionException {
+		return getMock(parameterContext.getParameter(), extensionContext);
+	}
 }

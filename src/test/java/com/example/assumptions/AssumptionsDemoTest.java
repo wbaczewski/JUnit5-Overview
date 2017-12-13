@@ -1,20 +1,20 @@
 package com.example.assumptions;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.junit.jupiter.api.Assumptions.assumingThat;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
+
 class AssumptionsDemoTest {
 
 	@Test
 	void shouldExecuteOnlyOnMonday() {
-		assumeTrue(DayOfWeek.MONDAY == (LocalDate.now().getDayOfWeek()));
+		assumeTrue(DayOfWeek.SATURDAY == (LocalDate.now().getDayOfWeek()));
 
 		assertTrue(1 == 1);
 	}

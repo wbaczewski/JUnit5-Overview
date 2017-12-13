@@ -1,8 +1,9 @@
 package com.example.exception;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExceptionDemoTest {
 
@@ -20,7 +21,7 @@ class ExceptionDemoTest {
 	void shouldParseStringParameterToIntegerExpectThrows() {
 
 		//	Assertions.expectThrows() has been deprecated in favor of Assertions.assertThrows().
-		Throwable exceptionFromExpectThrows = expectThrows(NumberFormatException.class,
+		Throwable exceptionFromExpectThrows = assertThrows(NumberFormatException.class,
 				() -> Integer.valueOf(TEST_STRING_NUMBER));
 
 		Throwable exceptionWithAssertThrows = assertThrows(NumberFormatException.class,
